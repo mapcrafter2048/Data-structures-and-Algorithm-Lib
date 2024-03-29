@@ -17,8 +17,7 @@
 using namespace std;
 using namespace std::chrono;
 
-int solve(int row, int col, int m, int n, vector<vector<int>> &grid,
-          vector<vector<int>> &dp)
+int solve(int row, int col, int m, int n, vector<vector<int>> &grid, vector<vector<int>> &dp)
 {
     if (row >= m || col >= n)
     {

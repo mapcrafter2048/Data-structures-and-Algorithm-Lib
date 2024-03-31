@@ -35,12 +35,13 @@ int main()
     for (int i = 0; i < numTestCases; ++i)
     {
         // Generate random array size
-        uniform_int_distribution<int> sizeDist(1, 15000); // Arrays with 1 to 20 elements
+        uniform_int_distribution<int> sizeDist(1, 100);
         int arraySize = sizeDist(generator);
+
         outputFile << arraySize << endl;
 
         // Generate random array elements
-        uniform_int_distribution<int> dataDist(-10000, 10000); // adjust range as needed
+        uniform_int_distribution<int> dataDist(-1000, 1000); // adjust range as needed
         for (int j = 0; j < arraySize; ++j)
         {
             outputFile << dataDist(generator) << " ";

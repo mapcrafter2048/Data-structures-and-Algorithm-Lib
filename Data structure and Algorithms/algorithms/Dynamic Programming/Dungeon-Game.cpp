@@ -54,6 +54,34 @@ int solve(int row, int col, vector<vector<int>> &grid,
     return dp[row][col];
 }
 
+// solve function:
+//
+//      This recursive function calculates the minimum health needed to reach a specific cell (row, col) in the dungeon.
+//      Base Case:
+//           If the cell is the bottom-right corner (row == m - 1 && col == n - 1), we consider two scenarios:
+//           The knight needs at least 1 HP to survive (max(1, ...)).
+//           The knight's health after entering the cell should be at least 1 (1 - grid[row][col]). We take the maximum of these values.
+//      Out of Bounds Check:
+//           If the cell is outside the grid boundaries, it's an invalid path, so we return a very high value (INT_MAX) to represent this.
+//      Memoization:
+//          Before calculating for the current cell, we check the DP table (dp[row][col]). If a value is already stored, it signifies we've previously computed the minimum health for this cell, and we can directly return that value.
+//      Recursive Exploration:
+//          We calculate the minimum health required to reach the cell from two possible directions:
+//          Downward (solve(row + 1, col, grid, dp))
+//          Rightward (solve(row, col + 1, grid, dp))
+//      Minimum Health Calculation:
+//          We find the minimum health needed from the two explored paths (min(sum1, sum2)) and subtract the current cell's cost (grid[row][col]). This accounts for the health gained/lost in that cell.
+//      Minimum 1 HP Check:
+//          We ensure the knight has at least 1 HP at the current cell (max(1, dp[row][col])).
+//      Memoization:
+//          The calculated minimum health for the current cell (dp[row][col]) is stored in the DP table for future reference.
+//          The function returns the minimum health required to reach the current cell.
+// calculateMinimumHP function:
+//
+//          This function initializes the DP table (dp) with zeros.
+//          It calls the solve function starting from the top-left corner (0, 0) to initiate the DP calculation.
+//          The function returns the minimum health required to reach the bottom-right corner, as calculated by the solve function.
+
 int calculateMinimumHP(vector<vector<int>> &dungeon)
 {
     int m = dungeon.size();

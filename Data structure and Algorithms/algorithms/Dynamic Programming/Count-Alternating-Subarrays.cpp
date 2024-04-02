@@ -17,6 +17,7 @@
 using namespace std;
 using namespace std::chrono;
 
+// This is the examples of Iterative dp in which we are not using memoization so we using the solution of the previous problems to find the solution of the current problem. In this if the current element is not equal to the previous element then we will add 1 to the previous element and store it in the current element. If the current element is equal to the previous element then we will store 1 in the current element. In the end we will add all the elements of the dp array and return the answer.
 long long int countAlternatingSubarrays(vector<int> &nums)
 {
     int n = nums.size();

@@ -17,6 +17,29 @@
 using namespace std;
 using namespace std::chrono;
 
+int longestIncreasingSubsequenceDp(int size, vector<int> nums, int curr, int prev, vector<vector<int>> &dp)
+{
+    if (curr == size)
+    {
+        return 0;
+    }
+
+    if (dp[curr][prev] != -1)
+    {
+        return dp[curr][prev];
+    }
+
+    int include = 0;
+    if (prev == -1 || nums[curr] > nums[prev])
+    {
+        include = 1 + longestIncreasingSubsequenceDp(size, nums, curr + 1, curr, dp);
+    }
+
+    int exclude = longestIncreasingSubsequenceDp(size, nums, curr + 1, prev, dp);
+
+    return dp[curr][prev + 1] = max(include, exclude);
+}
+
 pair<int, vector<int>> longestIncreasingSubsequence(vector<int> A)
 {
     int n = A.size();

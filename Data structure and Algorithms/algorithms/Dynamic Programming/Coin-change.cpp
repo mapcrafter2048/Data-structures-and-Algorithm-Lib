@@ -45,7 +45,8 @@ int solve(vector<int> &coins, vector<vector<int>> &dp, int currentCoin, int amou
 
         int take = (solve(coins, dp, currentCoin, amount - coins[currentCoin]) == INT_MAX ? INT_MAX : 1 + solve(coins, dp, currentCoin, amount - coins[currentCoin])); // take the current coin and call the function again with the same coin
         int notTake = solve(coins, dp, currentCoin + 1, amount);
-        return dp[currentCoin][amount] = min(take, notTake);
+        dp[currentCoin][amount] = min(take, notTake);
+        return dp[currentCoin][amount];
     }
 }
 

@@ -52,7 +52,7 @@ int main()
             outputFile << dataDist(generator) << " ";
         }
 
-                outputFile << endl; // Newline after each array
+        outputFile << endl; // Newline after each array
     }
 
     outputFile.close();

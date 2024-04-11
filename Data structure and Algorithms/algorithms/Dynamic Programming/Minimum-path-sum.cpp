@@ -40,6 +40,10 @@ int solve(int row, int col, int m, int n, vector<vector<int>> &grid, vector<vect
     return dp[row][col] = grid[row][col] + min(downCost, rightCost);
 }
 
+/*
+In the given code, the dp matrix is initialized with INT_MAX to represent that the corresponding cells in the matrix have not been visited yet. By initializing the dp matrix with a large value like INT_MAX, we ensure that any valid path sum will be smaller than the initial value. This allows us to track and update the minimum path sum as we traverse the grid.
+*/
+
 int minPathSum(vector<vector<int>> &grid)
 {
 

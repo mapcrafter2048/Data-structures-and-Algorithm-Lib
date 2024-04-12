@@ -1,3 +1,16 @@
+/*
+The demons had captured the princess and imprisoned her in the bottom-right corner of a dungeon. The dungeon consists of m x n rooms laid out in a 2D grid. Our valiant knight was initially positioned in the top-left room and must fight his way through dungeon to rescue the princess.
+
+The knight has an initial health point represented by a positive integer. If at any point his health point drops to 0 or below, he dies immediately.
+
+Some of the rooms are guarded by demons (represented by negative integers), so the knight loses health upon entering these rooms; other rooms are either empty (represented as 0) or contain magic orbs that increase the knight's health (represented by positive integers).
+
+To reach the princess as quickly as possible, the knight decides to move only rightward or downward in each step.
+
+Return the knight's minimum initial health so that he can rescue the princess.
+
+Note that any room can contain threats or power-ups, even the first room the knight enters and the bottom-right room where the princess is imprisoned.
+*/
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -53,35 +66,35 @@ int solve(int row, int col, vector<vector<int>> &grid,
     dp[row][col] = max(1, dp[row][col]);
     return dp[row][col];
 }
+/*
+solve function:
 
-// solve function:
-//
-//      This recursive function calculates the minimum health needed to reach a specific cell (row, col) in the dungeon.
-//      Base Case:
-//           If the cell is the bottom-right corner (row == m - 1 && col == n - 1), we consider two scenarios:
-//           The knight needs at least 1 HP to survive (max(1, ...)).
-//           The knight's health after entering the cell should be at least 1 (1 - grid[row][col]). We take the maximum of these values.
-//      Out of Bounds Check:
-//           If the cell is outside the grid boundaries, it's an invalid path, so we return a very high value (INT_MAX) to represent this.
-//      Memoization:
-//          Before calculating for the current cell, we check the DP table (dp[row][col]). If a value is already stored, it signifies we've previously computed the minimum health for this cell, and we can directly return that value.
-//      Recursive Exploration:
-//          We calculate the minimum health required to reach the cell from two possible directions:
-//          Downward (solve(row + 1, col, grid, dp))
-//          Rightward (solve(row, col + 1, grid, dp))
-//      Minimum Health Calculation:
-//          We find the minimum health needed from the two explored paths (min(sum1, sum2)) and subtract the current cell's cost (grid[row][col]). This accounts for the health gained/lost in that cell.
-//      Minimum 1 HP Check:
-//          We ensure the knight has at least 1 HP at the current cell (max(1, dp[row][col])).
-//      Memoization:
-//          The calculated minimum health for the current cell (dp[row][col]) is stored in the DP table for future reference.
-//          The function returns the minimum health required to reach the current cell.
-// calculateMinimumHP function:
-//
-//          This function initializes the DP table (dp) with zeros.
-//          It calls the solve function starting from the top-left corner (0, 0) to initiate the DP calculation.
-//          The function returns the minimum health required to reach the bottom-right corner, as calculated by the solve function.
+    This recursive function calculates the minimum health needed to reach a specific cell (row, col) in the dungeon.
+        Base Case:
+            If the cell is the bottom-right corner (row == m - 1 && col == n - 1), we consider two scenarios:
+            The knight needs at least 1 HP to survive (max(1, ...)).
+            The knight's health after entering the cell should be at least 1 (1 - grid[row][col]). We take the maximum of these values.
+        Out of Bounds Check:
+            If the cell is outside the grid boundaries, it's an invalid path, so we return a very high value (INT_MAX) to represent this.
+        Memoization:
+            Before calculating for the current cell, we check the DP table (dp[row][col]). If a value is already stored, it signifies we've previously computed the minimum health for this cell, and we can directly return that value.
+        Recursive Exploration:
+            We calculate the minimum health required to reach the cell from two possible directions:
+            Downward (solve(row + 1, col, grid, dp))
+            Rightward (solve(row, col + 1, grid, dp))
+        Minimum Health Calculation:
+            We find the minimum health needed from the two explored paths (min(sum1, sum2)) and subtract the current cell's cost (grid[row][col]). This accounts for the health gained/lost in that cell.
+        Minimum 1 HP Check:
+            We ensure the knight has at least 1 HP at the current cell (max(1, dp[row][col])).
+        Memoization:
+            The calculated minimum health for the current cell (dp[row][col]) is stored in the DP table for future reference.
+            The function returns the minimum health required to reach the current cell.
+calculateMinimumHP function:
 
+            This function initializes the DP table (dp) with zeros.
+            It calls the solve function starting from the top-left corner (0, 0) to initiate the DP calculation.
+            The function returns the minimum health required to reach the bottom-right corner, as calculated by the solve function.
+*/
 int calculateMinimumHP(vector<vector<int>> &dungeon)
 {
     int m = dungeon.size();

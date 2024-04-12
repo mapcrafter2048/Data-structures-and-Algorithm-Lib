@@ -1,3 +1,8 @@
+/*
+Given an array of distinct integers nums and a target integer target, return the number of possible combinations that add up to target.
+
+The test cases are generated so that the answer can fit in a 32-bit integer.
+*/
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -35,6 +40,7 @@ int solve(int target, vector<int> &dp, vector<int> &nums)
     }
 
     int answer = 0;
+    // for each number in the array we will call the function with the target - nums[i] and add the result to the answer
     for (int i = 0; i < nums.size(); i++)
     {
         answer += solve(target - nums[i], dp, nums);

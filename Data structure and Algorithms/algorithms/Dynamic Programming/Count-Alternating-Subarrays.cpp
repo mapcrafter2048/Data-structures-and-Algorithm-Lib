@@ -1,3 +1,10 @@
+/*
+You are given a binary array nums.
+
+We call a subarray alternating if no two adjacent elements in the subarray have the same value.
+
+Return the number of alternating subarrays in nums.
+*/
 #include <iostream>
 #include <queue>
 #include <vector>

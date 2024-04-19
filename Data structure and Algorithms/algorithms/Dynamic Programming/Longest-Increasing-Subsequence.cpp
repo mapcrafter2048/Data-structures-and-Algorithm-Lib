@@ -40,6 +40,14 @@ int longestIncreasingSubsequenceDp(int size, vector<int> nums, int curr, int pre
     return dp[curr][prev + 1] = max(include, exclude);
 }
 
+/*
+The function starts by getting the size n of the input vector A. It then creates a new vector ans of size n, initializing all elements to 1. This ans vector will store the length of the longest increasing subsequence ending at each position in A.
+
+The function then enters a nested loop. The outer loop iterates over each element in A from the first to the last. The inner loop, for each i, iterates over all previous elements in A (from the first to the i-th). If the i-th element of A is greater than the j-th element and the length of the longest increasing subsequence ending at j plus 1 is greater than the current length of the longest increasing subsequence ending at i, it increments the i-th element of ans.
+
+In the context of the longest increasing subsequence problem, each entry dp[i] usually represents the length of the longest increasing subsequence ending at position i.
+*/
+
 pair<int, vector<int>> longestIncreasingSubsequence(vector<int> A)
 {
     int n = A.size();
@@ -49,6 +57,7 @@ pair<int, vector<int>> longestIncreasingSubsequence(vector<int> A)
     {
         for (int j = 0; j < i; j++)
         {
+            // if the next element is greater than the pervious element and if we can increase the length of the subsequence
             if (A[i] > A[j] && ans[j] + 1 > ans[i])
             {
                 ans[i]++;

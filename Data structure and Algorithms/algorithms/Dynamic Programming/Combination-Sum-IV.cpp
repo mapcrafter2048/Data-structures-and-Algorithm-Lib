@@ -1,48 +1,45 @@
 /*
-Given an array of distinct integers nums and a target integer target, return the number of possible combinations that add up to target.
+Given an array of distinct integers nums and a target integer target, return the
+number of possible combinations that add up to target.
 
 The test cases are generated so that the answer can fit in a 32-bit integer.
 */
-#include <iostream>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <stack>
-#include <cmath>
-#include <climits>
 #include <algorithm>
 #include <chrono>
+#include <climits>
+#include <cmath>
 #include <fstream>
-#include <string>
+#include <iostream>
+#include <map>
+#include <queue>
+#include <set>
 #include <sstream>
+#include <stack>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 using namespace std;
 using namespace std::chrono;
 
-int solve(int target, vector<int> &dp, vector<int> &nums)
-{
-    if (target == 0)
-    {
+int solve(int target, vector<int> &dp, vector<int> &nums) {
+    if (target == 0) {
         return 1;
     }
 
-    if (target < 0)
-    {
+    if (target < 0) {
         return 0;
     }
 
-    if (dp[target] != -1)
-    {
+    if (dp[target] != -1) {
         return dp[target];
     }
 
     int answer = 0;
-    // for each number in the array we will call the function with the target - nums[i] and add the result to the answer
-    for (int i = 0; i < nums.size(); i++)
-    {
+    // for each number in the array we will call the function with the target -
+    // nums[i] and add the result to the answer
+    for (int i = 0; i < nums.size(); i++) {
         answer += solve(target - nums[i], dp, nums);
     }
 
@@ -50,20 +47,17 @@ int solve(int target, vector<int> &dp, vector<int> &nums)
     return dp[target];
 }
 
-int combinationSum4(vector<int> &nums, int target)
-{
+int combinationSum4(vector<int> &nums, int target) {
     vector<int> dp(target + 1, -1);
     return solve(target, dp, nums);
 }
 
-int main()
-{
+int main() {
     auto start = high_resolution_clock::now();
 
     ifstream inputFile("Combination-Sum-IV-Test-Cases.txt");
 
-    if (!inputFile.is_open())
-    {
+    if (!inputFile.is_open()) {
         cerr << "Error opening input.txt" << endl;
         return 1; // Indicate failure
     }
@@ -71,8 +65,7 @@ int main()
     int numTestCases;
     inputFile >> numTestCases;
 
-    for (int testCase = 1; testCase <= numTestCases; ++testCase)
-    {
+    for (int testCase = 1; testCase <= numTestCases; ++testCase) {
         int arraySize;
         inputFile >> arraySize;
 
@@ -80,8 +73,7 @@ int main()
         inputFile >> targetSum;
 
         vector<int> nums(arraySize);
-        for (int i = 0; i < arraySize; ++i)
-        {
+        for (int i = 0; i < arraySize; ++i) {
             inputFile >> nums[i];
         }
 

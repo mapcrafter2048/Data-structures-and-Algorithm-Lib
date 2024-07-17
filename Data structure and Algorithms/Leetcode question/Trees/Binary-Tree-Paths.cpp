@@ -110,25 +110,26 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+void paths(TreeNode *root, string path, vector<string> &ans) {
+    if (root == nullptr) {
+        return;
+    }
+    path += to_string(root->val);
+
+    if (root->left == nullptr && root->right == nullptr) {
+        ans.push_back(path);
+    }
+
+    path += "->";
+    paths(root->left, path, ans);
+    paths(root->right, path, ans);
 }
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
+vector<string> binaryTreePaths(TreeNode *root) {
+    vector<string> ans;
+    paths(root, "", ans);
+    return ans;
+}
 
 int main() {
     long long int cases;

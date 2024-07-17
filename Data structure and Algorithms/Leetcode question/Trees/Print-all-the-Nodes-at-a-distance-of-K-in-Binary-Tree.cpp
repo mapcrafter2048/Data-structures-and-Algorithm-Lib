@@ -110,25 +110,77 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+void markParent(TreeNode *root,
+                unordered_map<TreeNode *, TreeNode *> &parent_track,
+                TreeNode *target) {
+    queue<TreeNode *> q;
+    q.push(root);
+    while (!q.empty()) {
+        TreeNode *currentNode = q.front();
+        q.pop(); // Pop the front node after accessing it
+
+        // Track parent for the left child
+        if (currentNode->left != nullptr) {
+            parent_track[currentNode->left] = currentNode;
+            q.push(currentNode->left);
+        }
+        // Track parent for the right child
+        if (currentNode->right != nullptr) {
+            parent_track[currentNode->right] = currentNode;
+            q.push(currentNode->right);
+        }
+    }
 }
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
+vector<int> distanceK(TreeNode *root, TreeNode *target, int k) {
+    unordered_map<TreeNode *, TreeNode *> parent_track;
+    // Mark the parent of each node starting from the root
+    markParent(root, parent_track, target);
+
+    unordered_map<TreeNode *, bool> visited;
+    queue<TreeNode *> q;
+    q.push(target);
+    visited[target] = true;
+
+    int currentLevel = 0;
+    while (!q.empty()) {
+        int size = q.size();
+        // Break if we reach the desired level
+        if (currentLevel == k) {
+            break;
+        }
+        for (int i = 0; i < size; i++) {
+            TreeNode *current = q.front();
+            q.pop();
+            // Check and enqueue left child if it has not been visited
+            if (current->left && !visited[current->left]) {
+                q.push(current->left);
+                visited[current->left] = true;
+            }
+            // Check and enqueue right child if it has not been visited
+            if (current->right && !visited[current->right]) {
+                q.push(current->right);
+                visited[current->right] = true;
+            }
+            // Check and enqueue parent if it has not been visited
+            if (parent_track[current] && !visited[parent_track[current]]) {
+                q.push(parent_track[current]);
+                visited[parent_track[current]] = true;
+            }
+        }
+        currentLevel++;
+    }
+
+    vector<int> result;
+    // Collect all nodes at distance k
+    while (!q.empty()) {
+        TreeNode *current = q.front();
+        q.pop();
+        result.push_back(current->val);
+    }
+
+    return result;
+}
 
 int main() {
     long long int cases;

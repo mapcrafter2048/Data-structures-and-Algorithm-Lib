@@ -99,7 +99,6 @@ long long int binpow(long long int b, long long int p, long long int mod) {
 }
 
 using namespace std;
-
 struct TreeNode {
     int val;
     TreeNode *left;
@@ -110,25 +109,26 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
-}
+bool isMirror(TreeNode *left_node, TreeNode *right_node) {
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
+    if (left_node == nullptr && right_node == nullptr) {
+        return true;
+    }
+    if (left_node == nullptr || right_node == nullptr) {
+        return false;
+    }
+    if (left_node->val != right_node->val) {
+        return false;
+    }
+    return isMirror(left_node->left, right_node->right) &&
+           isMirror(left_node->right, right_node->left);
+}
+bool isSymmetric(TreeNode *root) {
+    if (root == nullptr) {
+        return true;
+    }
+    return isMirror(root->left, root->right);
+}
 
 int main() {
     long long int cases;

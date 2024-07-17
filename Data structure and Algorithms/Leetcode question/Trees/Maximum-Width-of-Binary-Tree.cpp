@@ -110,25 +110,56 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
-}
+int widthOfBinaryTree(TreeNode *root) {
+    // Base case: if the tree is empty, return 0.
+    if (root == nullptr) {
+        return 0;
+    }
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
+    int answer = 0; // This will store the maximum width found.
+    queue<pair<TreeNode *, int>>
+        q; // Queue to perform BFS, storing nodes along with their indices.
+
+    q.push({root, 0}); // Start BFS with the root at index 0.
+
+    while (!q.empty()) {
+        int size = q.size(); // Number of nodes at the current level.
+        int minIndex =
+            q.front().second; // Index of the first node at the current level.
+
+        int first, last; // Variables to store the indices of the first and last
+                         // nodes of the current level.
+
+        for (int i = 0; i < size; i++) {
+            int currentIndex = q.front().second -
+                               minIndex; // Normalize index to prevent overflow.
+            TreeNode *node = q.front().first;
+            q.pop();
+
+            // Capture the index of the first and last nodes of the current
+            // level.
+            if (i == 0) {
+                first = currentIndex; // First node index at this level.
+            }
+            if (i == size - 1) {
+                last = currentIndex; // Last node index at this level.
+            }
+
+            // Continue BFS for non-null child nodes, calculating their indices.
+            if (node->left) {
+                q.push({node->left, 2 * currentIndex + 1});
+            }
+            if (node->right) {
+                q.push({node->right, 2 * currentIndex + 2});
+            }
+        }
+
+        // Update the maximum width found so far.
+        answer = max(answer, last - first + 1);
+    }
+
+    return answer; // Return the maximum width of the tree.
+}
 
 int main() {
     long long int cases;

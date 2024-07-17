@@ -101,6 +101,17 @@ long long int binpow(long long int b, long long int p, long long int mod) {
 using namespace std;
 
 vector<int> adj[100001];
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right)
+        : val(x), left(left), right(right) {}
+};
+
 void build(TreeNode *root) {
     if (root == nullptr) {
         return;

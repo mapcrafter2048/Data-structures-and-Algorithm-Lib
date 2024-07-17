@@ -110,25 +110,44 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+vector<int> leftView(TreeNode *root) {
+    vector<int> ans;
+    if (!root)
+        return ans;
+    queue<TreeNode *> q;
+    q.push(root);
+    while (!q.empty()) {
+        int n = q.size();
+        for (int i = 0; i < n; i++) {
+            TreeNode *temp = q.front();
+            q.pop();
+            if (i == 0)
+                ans.push_back(temp->val);
+            if (temp->left)
+                q.push(temp->left);
+            if (temp->right)
+                q.push(temp->right);
+        }
+    }
+    return ans;
 }
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
+void traversal(TreeNode *root, int level, vector<int> &ans) {
+    if (root == nullptr) {
+        return;
+    }
+    if (ans.size() == level) {
+        ans.push_back(root->val);
+    }
+    traversal(root->right, level + 1, ans);
+    traversal(root->left, level + 1, ans);
+}
+
+vector<int> rightSideView(TreeNode *root) {
+    vector<int> ans;
+    traversal(root, 0, ans);
+    return ans;
+}
 
 int main() {
     long long int cases;

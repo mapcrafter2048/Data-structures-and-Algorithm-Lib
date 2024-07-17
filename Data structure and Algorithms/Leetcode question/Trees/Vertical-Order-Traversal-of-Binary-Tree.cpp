@@ -110,31 +110,43 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+vector<vector<int>> verticalTraversal(TreeNode *root) {
+    map<int, map<int, multiset<int>>>
+        nodes; // vertical , horizontal(level) , values
+    queue<pair<TreeNode *, pair<int, int>>>
+        todo; // node , vertical , horizontal(level)
+    todo.push({root, {0, 0}});
+    while (!todo.empty()) {
+        auto p = todo.front();
+        todo.pop();
+        TreeNode *node = p.first;
+        int x = p.second.first, y = p.second.second;
+        nodes[x][y].insert(node->val);
+        if (node->left)
+            todo.push({node->left, {x - 1, y + 1}});
+        if (node->right)
+            todo.push({node->right, {x + 1, y + 1}});
+    }
+    vector<vector<int>> ans;
+    for (auto p : nodes) {
+        vector<int> col;
+        for (auto q : p.second) {
+            col.insert(col.end(), q.second.begin(), q.second.end());
+        }
+        ans.push_back(col);
+    }
+    return ans;
+    pr("nodes: ", nodes);
 }
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
-
 int main() {
-    long long int cases;
-    cin >> cases;
-    while (cases--) {
-        // Your code for each test case goes here
-    }
+    TreeNode *root = new TreeNode(3);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+    vector<vector<int>> ans = verticalTraversal(root);
+
+    pr("ans: ", ans);
     return 0;
 }

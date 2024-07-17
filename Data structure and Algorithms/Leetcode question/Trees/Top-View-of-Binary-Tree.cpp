@@ -110,25 +110,31 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+vector<int> topView(TreeNode *root) {
+    vector<int> ans;
+    map<int, int> mp;
+    queue<pair<TreeNode *, int>> q;
+    q.push({root, 0});
+    while (!q.empty()) {
+        auto p = q.front();
+        q.pop();
+        TreeNode *node = p.first;
+        int line = p.second;
+        if (mp.find(line) == mp.end()) {
+            mp[line] = node->val;
+        }
+        if (node->left) {
+            q.push({node->left, line - 1});
+        }
+        if (node->right) {
+            q.push({node->right, line + 1});
+        }
+    }
+    for (auto p : mp) {
+        ans.push_back(p.second);
+    }
+    return ans;
 }
-
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
 
 int main() {
     long long int cases;

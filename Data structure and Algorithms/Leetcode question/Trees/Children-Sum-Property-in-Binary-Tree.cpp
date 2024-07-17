@@ -110,25 +110,30 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+void changeTree(TreeNode *root) {
     if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+        return;
+    if (root->left == NULL && root->right == NULL)
+        return;
+    changeTree(root->left);
+    changeTree(root->right);
+    int left = 0, right = 0;
+    if (root->left != NULL)
+        left = root->left->val;
+    if (root->right != NULL)
+        right = root->right->val;
+    int diff = left + right - root->val;
+    if (diff > 0)
+        root->val += diff;
+    else if (diff < 0)
+        if (root->left != NULL) {
+            root->left->val += abs(diff);
+            changeTree(root->left);
+        } else if (root->right != NULL) {
+            root->right->val += abs(diff);
+            changeTree(root->right);
+        }
 }
-
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
 
 int main() {
     long long int cases;

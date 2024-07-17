@@ -110,25 +110,36 @@ struct TreeNode {
         : val(x), left(left), right(right) {}
 };
 
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+bool getPath(TreeNode *root, vector<int> &arr, int target) {
+    if (root == nullptr) {
+        return false;
+    }
+
+    if (root->val == target) {
+        arr.push_back(root->val);
+        return true;
+    }
+
+    if (getPath(root->left, arr, target) || getPath(root->right, arr, target)) {
+        arr.push_back(root->val);
+        return true;
+    }
+
+    arr.pop_back();
+    return false;
 }
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
+// so we will be doing our normal traversal but in this process we will be
+// storing the path in the vector and lets consider that we reached a leaf mode
+// we will return false that will indicate that this path is not valid and hence
+// weill remove the last element from the vector and return false
+
+vector<int> path(TreeNode *root, int target) {
+    vector<int> arr;
+    getPath(root, arr, target);
+    reverse(arr.begin(), arr.end());
+    return arr;
+}
 
 int main() {
     long long int cases;

@@ -137,6 +137,15 @@ int main() {
     cin >> cases;
     while (cases--) {
         // Your code for each test case goes here
+        vector<int> nums = {1, 0, -1, 0, -2, 2};
+        int target = 0;
+        vector<vector<int>> answer = fourSum(nums, target);
+        for (auto it : answer) {
+            for (auto jt : it) {
+                cout << jt << " ";
+            }
+            cout << endl;
+        }
     }
     return 0;
 }

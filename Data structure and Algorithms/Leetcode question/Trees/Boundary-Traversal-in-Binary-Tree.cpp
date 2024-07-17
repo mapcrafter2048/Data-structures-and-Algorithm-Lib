@@ -109,26 +109,63 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right)
         : val(x), left(left), right(right) {}
 };
-
-TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
-    if (root == NULL)
-        return NULL;
-    if (root->val == p->val || root->val == q->val)
-        return root;
-    TreeNode *left = lowestCommonAncestor(root->left, p, q);
-    TreeNode *right = lowestCommonAncestor(root->right, p, q);
-    if (left != NULL && right != NULL)
-        return root;
-    if (left == NULL)
-        return right;
-    return left;
+void addLeftBoundary(TreeNode *root, vector<int> result) {
+    TreeNode *curr = root->left;
+    while (curr != nullptr) {
+        if (curr->left != nullptr || curr->right != nullptr) {
+            result.push_back(curr->val);
+        }
+        if (curr->left != nullptr) {
+            curr = curr->left;
+        } else {
+            curr = curr->right;
+        }
+    }
 }
 
-// the logic of this question is that we iterate the tree and check if the root
-// is equal to p or q if it is then we return the root as the answer else we
-// check for the left and right subtree and if we get the answer from both the
-// left and right subtree then we return the root as the answer else we return
-// the one which is not null
+void addRightBoundary(TreeNode *root, vector<int> result) {
+    TreeNode *curr = root->right;
+    vector<int> temp;
+    while (curr != nullptr) {
+        if (curr->left != nullptr || curr->right != nullptr) {
+            temp.push_back(curr->val);
+        }
+        if (curr->right != nullptr) {
+            curr = curr->right;
+        } else {
+            curr = curr->left;
+        }
+    }
+
+    for (int i = temp.size() - 1; i >= 0; i--) {
+        result.push_back(temp[i]);
+    }
+}
+
+void addLeaves(TreeNode *root, vector<int> result) {
+    if (root->left == nullptr && root->right == nullptr) {
+        result.push_back(root->val);
+    }
+    if (root->left != nullptr) {
+        addLeaves(root->left, result);
+    }
+    if (root->right != nullptr) {
+        addLeaves(root->right, result);
+    }
+}
+
+vector<int> printBoundary(TreeNode *root) {
+    vector<int> result;
+    if (root == nullptr) {
+        return result;
+    }
+    if (root->left != nullptr || root->right != nullptr) {
+        result.push_back(root->val);
+    }
+    addLeftBoundary(root, result);
+    addRightBoundary(root, result);
+    return result;
+}
 
 int main() {
     long long int cases;

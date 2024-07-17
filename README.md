@@ -8,7 +8,6 @@ This repository contains a collection of data structures and algorithms implemen
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -55,7 +54,3 @@ Contributions to the Data Structures and Algorithm Library are welcome! If you h
 4. Push your changes to your forked repository.
 
 5. Submit a pull request, explaining the purpose and details of your contribution.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code for both commercial and non-commercial purposes.

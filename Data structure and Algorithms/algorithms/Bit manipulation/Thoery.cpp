@@ -17,8 +17,10 @@
 using namespace std;
 using namespace std::chrono;
 
+// checks if the ith bit is set
 bool isBitSet(int num, int i) { return (num & (1 << i)) != 0; }
 
+// sets the ith bit
 bool isOdd(int num) {
     return (num & 1) == 1; // Check if the least significant bit is 1
 }
@@ -64,6 +66,74 @@ int divide(int dividend, int divisor) {
     }
 
     return sign * quotient;
+}
+
+// << and >> are the left and right shift operators
+// << shifts the bits of a number to the left by a certain number of positions
+// >> shifts the bits of a number to the right by a certain number of positions
+// 1 << i shifts the bits of 1 to the left by i positions
+// 1 >> i shifts the bits of 1 to the right by i positions
+// & is the bitwise AND operator
+// | is the bitwise OR operator
+// ^ is the bitwise XOR operator
+// ~ is the bitwise NOT operator
+
+int toggleBit(int num, int i) { return num ^ (1 << i); }
+
+int clearBit(int num, int i) { return num & ~(1 << i); }
+
+int setBit(int num, int i) { return num | (1 << i); }
+
+int updateBit(int num, int i, int bitValue) {
+    int mask = ~(1 << i);
+    return (num & mask) | (bitValue << i);
+}
+
+int reverseBits(int num) {
+    int reversedNum = 0;
+    int numOfBits = sizeof(num) * 8;
+    for (int i = 0; i < numOfBits; i++) {
+        if (isBitSet(num, i)) {
+            reversedNum |= (1 << (numOfBits - 1 - i));
+        }
+    }
+    return reversedNum;
+}
+
+int countLeadingZeros(int num) {
+    int count = 0;
+    int numOfBits = sizeof(num) * 8;
+    for (int i = numOfBits - 1; i >= 0; i--) {
+        if (isBitSet(num, i)) {
+            break;
+        }
+        count++;
+    }
+    return count;
+}
+
+int countTrailingZeros(int num) {
+    int count = 0;
+    int numOfBits = sizeof(num) * 8;
+    for (int i = 0; i < numOfBits; i++) {
+        if (isBitSet(num, i)) {
+            break;
+        }
+        count++;
+    }
+    return count;
+}
+
+int rotateLeft(int num, int k) {
+    int numOfBits = sizeof(num) * 8;
+    k %= numOfBits;
+    return (num << k) | (num >> (numOfBits - k));
+}
+
+int rotateRight(int num, int k) {
+    int numOfBits = sizeof(num) * 8;
+    k %= numOfBits;
+    return (num >> k) | (num << (numOfBits - k));
 }
 
 int main() {
